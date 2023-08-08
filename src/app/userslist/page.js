@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { deleteUser } from "../actions/Action";
 import { editThisUser } from "../actions/Action";
+import { useRouter } from "next/navigation";
 
 const UsersList = () => {
   const dispatch = useDispatch();
   const dataUsers = useSelector((state) => state.students.studentData);
+  const router = useRouter();
 
   console.log("USERS List ", dataUsers);
 
@@ -22,6 +24,8 @@ const UsersList = () => {
     console.log("UPDATE ID =", id);
     const editUser = dataUsers.filter((student) => student.id === id);
     dispatch(editThisUser(editUser));
+
+    router.push("/");
   }
 
   return (

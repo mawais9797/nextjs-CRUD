@@ -8,10 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "./actions/Action";
 
 import { updateUser } from "./actions/Action";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const UserSignupAndEdit = () => {
   const editUser = useSelector((state) => state.students.editStudent);
   const allUsers = useSelector((state) => state.students.studentData);
+  const router = useRouter();
 
   let userEdit = editUser;
   // const userEdit = 1;
@@ -50,7 +53,7 @@ const UserSignupAndEdit = () => {
     role: Yup.string().required("Please Select a Role "),
   });
 
-  const handleUpdate = (values) => {
+  const handleUpdate = (values, { resetForm }) => {
     // debugger;
     const key = "id";
     values[key] = editUser[0].id;
@@ -59,13 +62,15 @@ const UserSignupAndEdit = () => {
     debugger;
     dispatch(updateUser(values, allUsers));
 
+    resetForm();
+    router.push("/userslist");
     // setUserValue([...userValue, values]);
     // dispatch(addUser(values));
     // navigate("/employeedata");
   };
 
   const handleSubmit = (values, { resetForm }) => {
-    // console.log("here");
+    console.log("here submit", values);
     // console.log(values.company);
     // const newEmployee = { ...values };
     // setUserValue((previous) => [...previous, newEmployee]);
@@ -77,7 +82,8 @@ const UserSignupAndEdit = () => {
       company: values.company,
       role: values.role,
     };
-    setUserValue([...userValue, newUser]);
+
+    // setUserValue([...userValue, newUser]);
 
     // console.log("FormValues =", values);
     // console.log("NewEmployee Values =", newEmployee);
@@ -85,6 +91,7 @@ const UserSignupAndEdit = () => {
     dispatch(addUser(newUser));
 
     resetForm();
+    router.push("/userslist");
 
     // navigate("/employeedata");
   };
